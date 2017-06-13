@@ -13,43 +13,23 @@ Este paquete te permite hacer uso del web service de Finkok
 
 
 ## Introducción
-JorgeAndrade\Finkok provee un mecanismo para user el servio de timbrado de Finkok.
-
-```php
-require 'vendor/autoload.php';
-use JorgeAndrade\Finkok;
-use JorgeAndrade\Exceptions\FinkokException;
-
-$username = "";
-$password = "";
-$sandbox = false; // por defecto esta en true
-
-$finkok = new Finkok($username, $password, $sandbox);
-
-try {
-  $finkok->createNewClient($rfc);
-
-} catch (FinkokException $e) {
-  var_dump($e->getMessage());
-}
-```
+Finkok-Helper provee un mecanismo para usar el servicio de timbrado de Finkok.
 
 ## Instalación
 Simplemente instala el paquete con composer:
 
 ```php
-composer require jorgeandrade/finkok
+composer require xisfacturacion/finkok
 ```
-Una vez composer termine de instalar el paquete simplemente importa el paquete y crea una nueva instancia pasando los parametros correspondientes:
+Una vez composer termine de instalar el paquete se debe importar el paquete y crear una nueva instancia pasando los parametros correspondientes:
 
 ```php
-require 'vendor/autoload.php';
+require_once __DIR__ . '\vendor\autoload.php'; // Autoload files using Composer autoload
 
-use JorgeAndrade\Finkok;
-use JorgeAndrade\Exceptions\FinkokException;
+use XisFacturacion\Finkok;
 
-$username = "";
-$password = "";
+$username = "";   //Usuario finkok
+$password = "";   //Contraseña finkok
 $sandbox = false; // por defecto esta en true
 
 $finkok = new Finkok($username, $password, $sandbox);
@@ -60,17 +40,17 @@ Agregar clientes, obtener clientes, timbrar y cancelar es extremadamente facil.
 Si algo sale mal las funciones arrojaran una exception de tipo **JorgeAndrade\Exceptions\FinkokException**.
 ## Agregar clientes
 ```php
-$finkok->createNewClient($rfc);
+$finkok->newCliente($rfc);
 ```
 
 ##Obtener clientes
 ```php
-$clientes = $finkok->getClients();
+$clientes = $finkok->getClientes();
 ```
 
 ## Obtener cliente por rfc
 ```php
-$client = $finkok->getClient($rfc);
+$client = $finkok->getClientePorRfc($rfc);
 ```
 
 ## Timbrar
@@ -85,4 +65,4 @@ $response = $finkok->cancelar($rfc, $uuids = [], $cer, $key);
 
 ## Licencia
 
-Finkok es un programa de codigo abierto bajo la licencia [MIT license](http://opensource.org/licenses/MIT)
+Finkok-Helper es un programa de codigo abierto bajo la licencia [MIT license](http://opensource.org/licenses/MIT)
