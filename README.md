@@ -1,4 +1,4 @@
-# Finkok
+# Finkok-Helper
 Este paquete te permite hacer uso del web service de Finkok
 
 - [Introducción](#introduccion)
