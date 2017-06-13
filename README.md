@@ -36,8 +36,8 @@ $finkok = new Finkok($username, $password, $sandbox);
 ```
 
 ## Uso
-Agregar clientes, obtener clientes, timbrar y cancelar es extremadamente facil.
-Si algo sale mal las funciones arrojaran una exception de tipo **JorgeAndrade\Exceptions\FinkokException**.
+Agregar clientes, obtener clientes, timbrar y cancelar es muy fácil, los metodos contienen la siguiente firma y devuelven un valor adecuado para trabajar con el resultado.
+
 ## Agregar clientes
 ```php
 $finkok->newCliente($rfc);
