@@ -16,8 +16,8 @@
     "minimum-stability" : "stable",
     "prefer-stable" : "true",
     "autoload": {
-    	"psr-0": {
-    		"XisFacturacion\\Finkok" : "src/"
+    	"psr-4": {
+    		"xisfacturacion\\finkok\\" : "src"
     	}
     }
 }
