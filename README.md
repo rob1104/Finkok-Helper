@@ -38,27 +38,27 @@ $finkok = new Finkok($username, $password, $sandbox);
 ## Uso
 Agregar clientes, obtener clientes, timbrar y cancelar es muy fácil, los metodos contienen la siguiente firma y devuelven un valor adecuado para trabajar con el resultado.
 
-## Agregar clientes
+### Agregar clientes
 ```php
 $finkok->newCliente($rfc);
 ```
 
-## Obtener clientes
+### Obtener clientes
 ```php
 $clientes = $finkok->getClientes();
 ```
 
-## Obtener cliente por rfc
+### Obtener cliente por rfc
 ```php
 $client = $finkok->getClientePorRfc($rfc);
 ```
 
-## Timbrar
+### Timbrar
 ```php
 $response = $finkok->timbrar($xml);
 ```
 
-## Cancelar
+### Cancelar
 ```php
 $response = $finkok->cancelar($rfcemisor, $uuid);
 ```
