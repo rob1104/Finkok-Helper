@@ -43,7 +43,7 @@ Agregar clientes, obtener clientes, timbrar y cancelar es muy fácil, los metodo
 $finkok->newCliente($rfc);
 ```
 
-##Obtener clientes
+## Obtener clientes
 ```php
 $clientes = $finkok->getClientes();
 ```
