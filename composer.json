@@ -9,8 +9,7 @@
             "name": "Robbie Escamilla",
             "email": "rescamilla@xis.mx"
         }
-    ],
-    "minimum-stability": "dev",
+    ],   
     "require": {
     	"php": ">=5.6.4"
     },
