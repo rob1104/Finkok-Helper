@@ -60,7 +60,7 @@ $response = $finkok->timbrar($xml);
 
 ## Cancelar
 ```php
-$response = $finkok->cancelar($rfc, $uuids = [], $cer, $key);
+$response = $finkok->cancelar($rfcemisor, $uuid);
 ```
 
 ## Licencia
