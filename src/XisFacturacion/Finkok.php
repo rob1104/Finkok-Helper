@@ -1,6 +1,7 @@
 <?php	
 	namespace XisFacturacion;
 
+	//V 1.0.9
 	class Finkok
 	{
 		/**************************************P R O P I E D A D E S**************************************************/
@@ -23,13 +24,13 @@
 		*/
 		public function timbrar($archivoXml)
 		{
-			$contenidoXml = file_get_contents($archivoXml); //Guardo el contenido del xml en una variable
+			// $contenidoXml = file_get_contents($archivoXml); //Guardo el contenido del xml en una variable
 
-			$soapclient = new SoapClient("{$this->url}stamp.wsdl"); //Instancia del objeto SoapClient (con la url stamp)
+			$soapclient = new \SoapClient("{$this->url}stamp.wsdl"); //Instancia del objeto \SoapClient (con la url stamp)
 
 			/******Parametros requeridos por el webservice******/
 			$params = array(
-				"xml" => $contenidoXml,
+				"xml" => $archivoXml,
 				"username" => $this->username,
 				"password" => $this->password
 			);
@@ -44,25 +45,16 @@
 					$response->stampResult->CodEstatus = "Error al timbrar CFDI, verifique las incidencias";
 			}
 
-			if($response->stampResult->CodEstatus == "Comprobante timbrado satisfactoriamente")
-				file_put_contents($archivoXml, $response->stampResult->xml); //Guardamos el XML ya timbrado reemplazando al anterior
-
 			return $response->stampResult;
 		}
 
-		public function cancelar($rfcemisor, $uuid)
+		public function cancelar($rfcemisor, $uuid, $cer, $key)
 		{
-			// Generar el certificado y llave en formato .pem
-			shell_exec("openssl x509 -inform DER -outform PEM -in c.cer -pubkey -out c.pem");
-			shell_exec("openssl pkcs8 -inform DER -in l.key -passin pass:12345678a -out l.pem");
-			shell_exec("openssl rsa -in l.pem -des3 -out cancelaciones.enc -passout pass:Facturacion2017$");
-			 
-			
 			//Se obtiene el contenido de los archivos de certificado y llave encriptados para poder pasarlos al we bservice
-			$cer_content = file_get_contents("c.pem");
-			$key_content = file_get_contents("cancelaciones.enc");
+			$cer_content = file_get_contents($cer);
+			$key_content = file_get_contents($key);
 			
-			$client = new SoapClient("{$this->url}cancel.wsdl");  //Instancia del objeto SoapClient (con la url cancel)
+			$client = new \SoapClient("{$this->url}cancel.wsdl");  //Instancia del objeto SoapClient (con la url cancel)
 
 			$uuid = array($uuid);  // Hago el casting de string a array porque asi lo requiere el Web Service (Aunque solo se cancele un comprobante)
 
@@ -88,7 +80,7 @@
 
 		public function getClientePorRfc($rfc)
 		{
-			$soapclient = new SoapClient("{$this->url}registration.wsdl");
+			$soapclient = new \SoapClient("{$this->url}registration.wsdl");
 	        /******Parametros requeridos por el webservice******/
 			$params = array(
 			  "reseller_username" => $this->username,
@@ -101,7 +93,7 @@
 
 		public function getClientes()
 		{
-			$soapclient = new SoapClient("{$this->url}registration.wsdl");
+			$soapclient = new \SoapClient("{$this->url}registration.wsdl");
 	        /******Parametros requeridos por el webservice******/
 			$params = array(
 			  "reseller_username" => $this->username,
@@ -113,7 +105,7 @@
 		
 		public function newCliente($rfc)
 	    {
-	        $client = new SoapClient("{$this->url}registration.wsdl");
+	        $client = new \SoapClient("{$this->url}registration.wsdl");
 	        /******Parametros requeridos por el webservice******/
 	        $params = array(
 			  "reseller_username" => $this->username,
