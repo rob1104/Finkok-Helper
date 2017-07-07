@@ -1,6 +1,6 @@
 <?php
 
-    //V 1.0.14
+    //V 1.0.15
 	namespace XisFacturacion;
 
 	use App\Emisor_CFDI;
