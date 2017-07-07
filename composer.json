@@ -1,7 +1,7 @@
 {
     "name": "xisfacturacion/finkok",
     "description": "Clase auxiliar para el servicio de timbrado del PAC Finkok que se utilizara en el CFDI 3.3 (Factuxis v3)",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "type": "library",
     "license": "MIT",
     "authors": [
