@@ -1,8 +1,11 @@
-<?php	
+<?php
+
+    //V 1.0.14
 	namespace XisFacturacion;
 
-	//V 1.0.13
-	class Finkok
+	use App\Emisor_CFDI;
+
+    class Finkok
 	{
 		/**************************************P R O P I E D A D E S**************************************************/
 		//Usuario y contraseña asignados por FINKOK
@@ -52,10 +55,13 @@
 		{
 			//Se obtiene el contenido de los archivos de certificado y llave encriptados para poder pasarlos al we bservice
 			$cer_content = file_get_contents($cer);
-			$key_content = file_get_contents($key);
-			
-			$client = new \SoapClient("{$this->url}cancel.wsdl");  //Instancia del objeto SoapClient (con la url cancel)
-
+			$storagePath = \Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix();
+			$q = Emisor_CFDI::whereRfc($rfcemisor)->first();
+			$file = $storagePath . "emisores/" . $rfcemisor . "/CSD/CANCELACIONES_" . $rfcemisor . ".enc";
+			$cmd = 'openssl rsa -in ' . $key . ' -des3 -out ' . $file . ' -passout pass:Facturacion2017$';
+            shell_exec($cmd);
+            $key_content = file_get_contents($file);
+            $client = new \SoapClient("{$this->url}cancel.wsdl");  //Instancia del objeto SoapClient (con la url cancel)
 			$uuid = array($uuid);  // Hago el casting de string a array porque asi lo requiere el Web Service (Aunque solo se cancele un comprobante)
 
 			/******Parametros requeridos por el webservice******/
@@ -67,16 +73,28 @@
 			  "cer" => $cer_content,
 			  "key" => $key_content
 			);
-			/**************************************************/
 
+
+			/**************************************************/
 			$response = $client->__soapCall("cancel", array($params));   //Ejecuta la peticion al web service, y guardamos la respuesta en un stdClass
-			
-			/* Si cancela correctamente devuelve un acuse y lo guardo en un archivo unico*/
-			if(isset($response->cancelResult->Acuse))
-				file_put_contents("Acuse Cancelacion - " . $uuid[0] . ".xml", $response->cancelResult->Acuse);
 
 			return $response->cancelResult;
 		}
+
+		public function getAcuse($rfcemisor, $uuid, $type)
+        {
+            $params = array(
+                "username" => $this->username,
+                "password" => $this->password,
+                "taxpayer_id" => $rfcemisor,
+                "uuid" => $uuid,
+                "type" => $type
+            );
+
+            $client = new \SoapClient("{$this->url}cancel.wsdl");  //Instancia del objeto SoapClient (con la url cancel)
+            $response = $client->__soapCall("get_receipt", array($params));
+            return $response;
+        }
 
 		public function getClientePorRfc($rfc)
 		{
