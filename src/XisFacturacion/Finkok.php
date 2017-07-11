@@ -1,6 +1,6 @@
 <?php
 
-    //V 1.0.15
+    //V 1.0.17
 	namespace XisFacturacion;
 
 	use App\Emisor_CFDI;
@@ -107,6 +107,28 @@
 			);
 	        $response = $client->__soapCall('get', array($params));
 	        return $response->getResult;
+		}
+
+		public function getTimbresRestantesPorRfc($rfc)
+		{
+			$soapclient = new \SoapClient("{$this->url}utilities.wsdl");
+			$params = array(
+			  "username" => $this->username,
+			  "password" => $this->password,
+			  "taxpayer_id" => $rfc
+			);
+			 
+			# Response envia al webservice los datos del array al método report_credit
+			$response = $soapclient->__soapCall("report_credit", array($params));
+			 
+			# La variable credits almacena EL REPORTE de los créditos que regresa el web service
+			$credits = $response->report_creditResult->result;
+			 
+			# Se verifica si existen créditos
+			if (property_exists($credits, 'ReportTotalCredit')) {
+				return $credits->ReportTotalCredit[$i]->credit
+			}
+			return "Usuario Ilimitado";
 		}
 
 		public function getClientes()
