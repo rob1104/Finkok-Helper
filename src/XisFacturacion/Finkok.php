@@ -1,6 +1,6 @@
 <?php
 
-    //V 1.0.17
+    //V 1.0.18
 	namespace XisFacturacion;
 
 	use App\Emisor_CFDI;
@@ -126,7 +126,7 @@
 			 
 			# Se verifica si existen créditos
 			if (property_exists($credits, 'ReportTotalCredit')) {
-				return $credits->ReportTotalCredit[$i]->credit
+				return $credits->ReportTotalCredit[$i]->credit;
 			}
 			return "Usuario Ilimitado";
 		}
