@@ -1,6 +1,6 @@
 <?php
 
-    //V 1.0.18
+    //V 1.0.19
 	namespace XisFacturacion;
 
 	use App\Emisor_CFDI;
@@ -51,14 +51,14 @@
 			return $response->stampResult;
 		}
 
-		public function cancelar($rfcemisor, $uuid, $cer, $key)
+		public function cancelar($rfcemisor, $uuid, $cer, $key, $pass)
 		{
 			//Se obtiene el contenido de los archivos de certificado y llave encriptados para poder pasarlos al we bservice
 			$cer_content = file_get_contents($cer);
 			$storagePath = \Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix();
 			$q = Emisor_CFDI::whereRfc($rfcemisor)->first();
 			$file = $storagePath . "emisores/" . $rfcemisor . "/CSD/CANCELACIONES_" . $rfcemisor . ".enc";
-			$cmd = 'openssl rsa -in ' . $key . ' -des3 -out ' . $file . ' -passout pass:Facturacion2017$';
+			$cmd = 'openssl rsa -in ' . $key . ' -des3 -out ' . $file . ' -passout pass:'. $pass;
             shell_exec($cmd);
             $key_content = file_get_contents($file);
             $client = new \SoapClient("{$this->url}cancel.wsdl");  //Instancia del objeto SoapClient (con la url cancel)
